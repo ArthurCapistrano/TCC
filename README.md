@@ -1,2 +1,2 @@
 # Trabalho de Conclusão de Curso
-Repositório dedicado para versionamento do TCC.
+Repositório dedicado ao versionamento do TCC.
