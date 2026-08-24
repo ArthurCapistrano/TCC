@@ -1,76 +1,36 @@
 ---
-name: register-paper
-description: Register a newly collected academic paper and prepare its metadata using the same fields defined in the literature screening spreadsheet.
+name: check-typst
+description: Validate whether the Typst manuscript compiles and diagnose source, bibliography, or asset errors. Use for build checks on article/main.typ, not for assessing scientific evidence or rewriting the manuscript.
 ---
 
-# Register Paper
+# Check Typst
 
 ## Purpose
 
-Register a new paper in the RAW layer and create its initial screening record.
+Check the manuscript build without changing its scientific content.
 
-## Source
+## Inputs
 
-`research/papers/`
+- `article/main.typ`
+- `article/references.bib`
+- local assets referenced by the manuscript, when present.
 
-## Destination
+## Process
 
-`research/notes/screening/<paper-id>.md`
-
-## Required fields
-
-Fill the following structure:
-
-# Paper Identification
-
-ID:
-Base:
-Title:
-Authors:
-Year:
-Journal/Conference:
-DOI/URL:
-Language:
-Document Type:
-Access:
-
-# Screening
-
-Inclusion Criterion:
-Exclusion Criterion:
-Exclusion Reason:
-Screening Stage:
-Decision:
-
-## Allowed values
-
-Document Type:
-- Journal article
-- Conference paper
-- Book
-- Book chapter
-- Thesis/Dissertation
-- Technical report
-- Pre-print
-- Other
-
-Access:
-- Open
-- Closed
-
-Screening Stage:
-- Title-Abstract
-- Full Text
-
-Decision:
-- Include
-- Exclude
-- Uncertain
+1. Inspect the manuscript entry point and referenced local files.
+2. Verify that the Typst executable is available.
+3. Compile the manuscript to a temporary output outside the repository when a
+   build check is requested.
+4. Report the first actionable diagnostics with their file and line when Typst
+   provides them.
+5. Modify source files only when the user explicitly asks for a fix, then run
+   the build check again.
 
 ## Rules
 
-- Preserve the same ID throughout the entire research workflow.
-- Do not infer unavailable bibliographic metadata.
-- Use `NOT IDENTIFIED` when necessary.
-- Do not perform evidence extraction.
-- Initial screening fields may remain pending.
+- A successful compilation validates the build, not the scientific argument,
+  citation fidelity, or factual correctness.
+- Do not alter `research/papers/` or other source evidence.
+- Do not invent bibliography entries to silence missing-citation errors.
+- Preserve user changes and avoid writing generated PDFs into the repository
+  unless the user requests an output artifact there.
