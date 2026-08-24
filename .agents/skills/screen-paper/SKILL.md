@@ -1,6 +1,6 @@
 ---
 name: screen-paper
-description: Evaluate a registered paper according to the project's inclusion and exclusion criteria and complete the fields corresponding to the Triagem spreadsheet.
+description: Evaluate a registered paper against predefined eligibility criteria and complete the decision fields from the Triagem worksheet. Use for title-abstract or full-text screening, not bibliographic registration or evidence extraction.
 ---
 
 # Screen Paper
@@ -13,33 +13,45 @@ and the corresponding RAW paper.
 
 ## Fields to evaluate
 
-Inclusion Criterion (Y/N):
+Critério de Inclusão (Y/N):
 
-Exclusion Criterion (Y/N):
+Critério de Exclusão (Y/N):
 
-Exclusion Reason:
+Motivo da Exclusão:
 
-Screening Stage:
-- Title-Abstract
-- Full Text
+Situação:
+- Título-Resumo
+- Texto Completo
 
-Decision:
-- Include
-- Exclude
-- Uncertain
+Decisão:
+- Incluir
+- Excluir
+- Dúvida
+
+Notas:
 
 ## Process
 
-1. Identify the current screening stage.
-2. Apply the defined inclusion criteria.
-3. Apply the defined exclusion criteria.
-4. Record whether each criterion is satisfied.
-5. Explain exclusion when applicable.
-6. Assign the final screening decision.
+1. Locate the predefined inclusion and exclusion criteria. Do not derive them
+   from the paper being screened.
+2. Identify the current screening stage and use only information legitimately
+   available at that stage.
+3. Apply each relevant inclusion criterion and each relevant exclusion
+   criterion.
+4. Record the consolidated Y/N fields and identify the specific criterion IDs
+   in `Notas` when the protocol defines more than one criterion.
+5. Explain exclusion with an objective reason traceable to the protocol.
+6. Assign the decision. Use `Dúvida` when the available material cannot support
+   a defensible decision.
+7. Hand the completed assessment to `register-screening-decision` when reviewer
+   identity and decision date need to be finalized.
 
 ## Rules
 
 - Do not use agreement with the research hypothesis as an inclusion criterion.
 - Contradictory papers must not be excluded because they contradict the project.
-- Use `Uncertain` when the available evidence is insufficient.
+- Use `Dúvida` when the available evidence is insufficient.
 - Exclusion reasons must be objective and traceable to predefined criteria.
+- Do not claim to be the accountable human reviewer. If the evaluation was
+  AI-assisted, preserve that fact for `Notas` and require researcher validation
+  before a final human decision is attributed.

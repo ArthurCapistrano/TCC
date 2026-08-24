@@ -13,6 +13,10 @@ Use:
 
 Do not use general model knowledge as literature evidence.
 
+This output corresponds to the `Matriz_de_Síntese` worksheet in
+`0_Levantamento_Bibliografico_MODELO (1).xlsx` and preserves its ten-column
+order.
+
 ## Destination
 
 `research/notes/synthesis/`
@@ -21,23 +25,23 @@ Do not use general model knowledge as literature evidence.
 
 ID:
 
-Authors and Year:
+Autor(es) e Ano (para citação):
 
-Theme / Subtheme:
+Tema/Subtema:
 
-Study Type:
+Tipo de Estudo:
 
-Method:
+Método:
 
-Context / Country:
+Contexto/País:
 
-Central Variables:
+Variáveis centrais:
 
-Relevant Findings:
+Achados Relevantes (1-2 frases):
 
-Research Gaps / Opportunities:
+Lacunas/Oportunidades:
 
-Contribution to This Research:
+Como contribui para minha pesquisa?:
 
 ---
 

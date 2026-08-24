@@ -1,13 +1,14 @@
 ---
 name: register-paper
-description: Register a newly collected academic paper and prepare its metadata using the same fields defined in the literature screening spreadsheet.
+description: Register every record returned by a literature search in research/notes/screening using the bibliographic fields from the Triagem worksheet. Use for identification and initial status, not for deciding inclusion or extracting evidence.
 ---
 
 # Register Paper
 
 ## Purpose
 
-Register a new paper in the RAW layer and create its initial screening record.
+Register a search result and create its initial screening record. Registration
+does not imply that the paper has been included.
 
 ## Source
 
@@ -21,56 +22,70 @@ Register a new paper in the RAW layer and create its initial screening record.
 
 Fill the following structure:
 
-# Paper Identification
+# Identificação
 
 ID:
 Base:
-Title:
-Authors:
-Year:
-Journal/Conference:
+Título:
+Autores:
+Ano:
+Periódico/Conferência:
 DOI/URL:
-Language:
-Document Type:
-Access:
+Idioma:
+Tipo de Documento:
+Acesso (Aberto/Fechado):
 
-# Screening
+# Triagem
 
-Inclusion Criterion:
-Exclusion Criterion:
-Exclusion Reason:
-Screening Stage:
-Decision:
+Critério de Inclusão (Y/N): PENDENTE
+Critério de Exclusão (Y/N): PENDENTE
+Motivo da Exclusão: PENDENTE
+Situação (Título-Resumo/Texto Completo): PENDENTE
+Decisão (Incluir/Excluir/Dúvida): PENDENTE
+Revisor(a): PENDENTE
+Data da Decisão: PENDENTE
+Notas:
 
 ## Allowed values
 
-Document Type:
-- Journal article
-- Conference paper
-- Book
-- Book chapter
-- Thesis/Dissertation
-- Technical report
-- Pre-print
-- Other
+Tipo de Documento:
+- Artigo de periódico
+- Artigo de conferência
+- Livro
+- Capítulo de livro
+- Tese/Dissertação
+- Relatório técnico
+- Pré-print
+- Outro
 
-Access:
-- Open
-- Closed
+Acesso:
+- Aberto
+- Fechado
 
-Screening Stage:
-- Title-Abstract
-- Full Text
+Idioma (lista inicial da planilha; use os valores configurados no projeto):
+- pt
+- en
+- es
 
-Decision:
-- Include
-- Exclude
-- Uncertain
+Situação:
+- Título-Resumo
+- Texto Completo
+
+Decisão:
+- Incluir
+- Excluir
+- Dúvida
 
 ## Rules
 
+- Register all results returned by an in-scope executed search, not only records
+  that appear promising.
 - Preserve the same ID throughout the entire research workflow.
+- Record the originating database in `Base` and retain enough information in
+  `Notas` to trace the record to its search-plan entry when needed.
 - Do not infer unavailable bibliographic metadata.
-- Use `NOT IDENTIFIED` when necessary.
+- Use `NÃO IDENTIFICADO` for unavailable bibliographic metadata and `PENDENTE`
+  for fields that belong to a later workflow stage.
 - Do not perform evidence extraction.
-- Initial screening fields may remain pending.
+- Do not make a screening decision during registration unless the user
+  explicitly asks to continue with the screening workflow.
