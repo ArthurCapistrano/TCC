@@ -2,25 +2,41 @@
 
 ## Project goal
 
-This repository contains an undergraduate scientific research project
-written as an academic article using Typst.
+# Contexto do Projeto de TCC
 
-The research investigates how analytical pipelines that consume
-Brazilian public CNES data can remain resilient when the structure
-of the source data changes over time.
+## Título
+Resiliência do Lado do Consumidor a Mudanças Estruturais em Dados Públicos: uma Avaliação Comparativa de Ferramentas de Validação de Dados Aplicada ao CNES
 
-The study adopts the perspective of a downstream data consumer that
-has no control over the data producer and no formal data contract
-to guarantee schema stability
+## Pergunta-problema
+Em que medida ferramentas open-source de validação de schema/dados (como Great Expectations, Pandera, Frictionless e Soda Core) conseguem detectar mudanças estruturais em dados públicos do CNES, funcionando como mecanismo de resiliência do lado do consumidor na ausência de um data contract formal com o produtor?
 
-The main interest is in identifying, detecting, and handling structural
-changes that could otherwise break or compromise analytical pipelines
-and the data products built on top of them.
+## Contexto e escopo
+Trata-se de um Trabalho de Conclusão de Curso (graduação), individual, com tempo limitado, escrito em Typst como artigo acadêmico. Por isso, o escopo foi deliberadamente definido como uma **avaliação comparativa empírica de ferramentas já existentes** — e não a proposta de um novo framework, o que seria inviável nesse formato.
 
-The research does not assume cooperation from the data producer and
-does not aim to introduce producer-side data contracts. Instead, it
-investigates resilience mechanisms that can be implemented from the
-consumer side.
+O trabalho adota a perspectiva de um **consumidor de dados** que:
+- não tem controle sobre o produtor dos dados (CNES/DataSUS);
+- não possui nenhum data contract formal ou garantia de estabilidade de schema;
+- precisa lidar com mudanças estruturais que podem quebrar silenciosamente pipelines analíticos.
+
+Importante: o trabalho **não propõe** data contracts do lado do produtor. Ele investiga o que é possível fazer **apenas do lado do consumidor**, usando ferramentas de validação de dados (que são conceitualmente diferentes de data contracts — ver distinção abaixo).
+
+## Distinção conceitual central
+- **Data contract**: acordo formal entre produtor e consumidor, geralmente com enforcement no momento da publicação/escrita dos dados (ex: schema registry). Exige cooperação do produtor.
+- **Ferramentas de validação de dados** (Great Expectations, Pandera, Frictionless, Soda Core): verificam se os dados recebidos atendem a expectativas definidas, aplicadas do lado do consumidor, de forma unilateral e posterior à publicação dos dados. Não exigem cooperação do produtor.
+
+O TCC se posiciona explicitamente na segunda categoria, como resposta prática à ausência da primeira.
+
+## Metodologia planejada
+1. Definir critérios de comparação entre as ferramentas: tipos de mudança estrutural detectada (coluna adicionada/removida/renomeada, tipo alterado, mudança de encoding/delimitador), falsos positivos/negativos, esforço de configuração, facilidade de automação/alerta, extensibilidade, custo computacional, maturidade do projeto.
+2. Coletar versões históricas reais dos dados do CNES com mudanças estruturais conhecidas (via FTP do DataSUS), ou provocar mudanças sintéticas controladas quando necessário.
+3. Rodar cada ferramenta contra essas versões e medir empiricamente a capacidade de detecção e o esforço envolvido.
+4. Apresentar resultados em tabela comparativa + discussão qualitativa.
+
+## Motivação
+O CNES é amplamente usado por pesquisadores, gestores públicos e empresas, mas não oferece garantias formais de estabilidade de schema nem comunicação estruturada de mudanças. Isso causa pipelines quebrando silenciosamente ou produzindo resultados incorretos sem aviso. A maior parte da literatura sobre data contracts assume que o consumidor tem poder de negociação com o produtor — o que não existe na relação entre um pesquisador/empresa e um órgão público. O trabalho preenche uma lacuna prática (guia de decisão para quem constrói pipelines sobre CNES ou bases públicas similares) e acadêmica (pouca literatura aplicada a dados públicos brasileiros).
+
+## Pitch resumido
+Dados públicos como os do CNES podem mudar de estrutura sem aviso, já que o governo não tem obrigação de comunicar isso a quem consome. Quando isso acontece, pipelines de análise quebram ou passam a gerar números errados silenciosamente. Este TCC testa, na prática, se ferramentas gratuitas de validação de dados conseguem funcionar como uma "rede de segurança" para detectar essas mudanças antes que causem estrago, comparando o desempenho de cada uma nesse cenário real usando o histórico de dados do CNES como estudo de caso.
 
 ---
 
@@ -50,7 +66,9 @@ Contains the structured bibliographic workflow.
 
 Expected flow:
 
-papers
+search plan
+→ search execution
+→ papers and bibliographic records
 → screening
 → evidence extraction
 → synthesis
@@ -59,10 +77,53 @@ papers
 
 The expected directories are:
 
-- `notes/search-plan/`
-- `notes/screening/`
-- `notes/evidence/`
-- `notes/synthesis/`
+- `research/notes/search-plan/`
+- `research/notes/screening/`
+- `research/notes/evidence/`
+- `research/notes/synthesis/`
+
+## Bibliographic workflow schema
+
+`0_Levantamento_Bibliografico_MODELO (1).xlsx` defines the fields used by the
+research processing layer. The workbook is a structural model and operational
+record; it is not an academic source.
+
+Use the same stable paper ID across screening, evidence extraction and
+synthesis. Preserve the relationship between each registered search result and
+the search-plan execution that produced it.
+
+The worksheet-to-repository mapping is:
+
+| Worksheet | Repository destination | Specialized skill |
+|---|---|---|
+| `Plano_de_Busca` | `research/notes/search-plan/<search-id>.md` | `plan-literature-search` |
+| `Triagem` — bibliographic registration | `research/notes/screening/<paper-id>.md` | `register-paper` |
+| `Triagem` — eligibility assessment | same screening note | `screen-paper` |
+| `Triagem` — decision provenance | same screening note | `register-screening-decision` |
+| `Extração_de_Evidências` | `research/notes/evidence/<paper-id>.md` | `extract-evidence` |
+| `Matriz_de_Síntese` | `research/notes/synthesis/` | `synthesize-literature` |
+
+The `Listas` worksheet supplies controlled values for document type, screening
+stage, decision, access, study type, method, language and workflow status. It
+does not create a separate research-note stage.
+
+## Workflow gates
+
+- Plan and record the search before treating its results as the screening
+  corpus.
+- Register every returned record that is in scope for the documented search,
+  not only promising papers.
+- Define objective inclusion and exclusion criteria before applying them.
+- Do not send an excluded or unresolved paper to evidence extraction.
+- Do not synthesize a paper until its evidence note is complete enough for the
+  fields being compared.
+- Use `PENDENTE` for a stage not yet performed and `NÃO IDENTIFICADO` for
+  information that was sought but could not be located.
+- Never invent execution dates, result counts, reviewer identities, screening
+  decisions, citation counts or journal indicators.
+- When AI assists with search design, screening or extraction, disclose that
+  assistance in the relevant notes; do not attribute human responsibility or
+  validation that did not occur.
 
 ## Curated knowledge layer
 
