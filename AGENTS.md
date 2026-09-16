@@ -5,10 +5,10 @@
 # Contexto do Projeto de TCC
 
 ## Título
-Resiliência do Lado do Consumidor a Mudanças Estruturais em Dados Públicos: uma Avaliação Comparativa de Ferramentas de Validação de Dados Aplicada ao CNES
+Resiliência do Lado do Consumidor: Como resistir a Mudanças Estruturais em Base de Dados Públicas, uma Avaliação Comparativa de Ferramentas Open-Source de Qualidade de Dados
 
 ## Pergunta-problema
-Em que medida ferramentas open-source de validação de schema/dados (como Great Expectations, Pandera, Frictionless e Soda Core) conseguem detectar mudanças estruturais em dados públicos do CNES, funcionando como mecanismo de resiliência do lado do consumidor na ausência de um data contract formal com o produtor?
+Em que medida ferramentas open-source de validação de schema/dados (como Great Expectations, Pandera, Frictionless e Soda Core) conseguem detectar mudanças estruturais em dados públicos, funcionando como mecanismo de resiliência do lado do consumidor na ausência de um data contract formal com o produtor?
 
 ## Contexto e escopo
 Trata-se de um Trabalho de Conclusão de Curso (graduação), individual, com tempo limitado, escrito em Typst como artigo acadêmico. Por isso, o escopo foi deliberadamente definido como uma **avaliação comparativa empírica de ferramentas já existentes** — e não a proposta de um novo framework, o que seria inviável nesse formato.
