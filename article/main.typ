@@ -48,12 +48,37 @@ A aplicação de Great Expectations em dados públicos brasileiros é o cenário
 
 == Análise comparativa
 
-Os cinco trabalhos observam partes diferentes de um mesmo percurso. Foidl et al. (#cite(<foidl2024>, form: "year")) investigam problemas que afetam a qualidade das _pipelines_. Yamanaka et al. (#cite(<yamanaka2024>, form: "year")) levam a discussão para versões de uma base pública brasileira e mostram como mudanças em colunas dificultam sua integração. Os _surveys_ examinam as ferramentas em outro nível: Ehrlinger e Wöß (#cite(<ehrlinger2022>, form: "year")) avaliam recursos de _data profiling_, medição e monitoramento, enquanto Papastergios, Ehrlinger e Gounaris (#cite(<papastergios2026>, form: "year")) identificam _checks_ no código-fonte. Oliveira et al. (#cite(<oliveira2023>, form: "year")) aplicam Great Expectations a dados governamentais após comparar oito soluções.
+Tomados em conjunto, os cinco trabalhos abordam partes diferentes do problema investigado. A comparação considera o uso de dados públicos, o tratamento de mudanças estruturais, a presença das ferramentas escolhidas e a forma como os estudos avaliam seus resultados. _Sim_ indica atendimento ao critério, _Parcial_ corresponde a uma cobertura limitada ou indireta e _Não_ indica que o critério está fora do escopo do estudo.
 
-As diferenças de método impedem a comparação dos resultados por uma medida comum. Foidl et al. (#cite(<foidl2024>, form: "year")) combinam revisão, entrevistas e relatos de desenvolvedores para identificar causas e áreas problemáticas. Yamanaka et al. (#cite(<yamanaka2024>, form: "year")) realizam um experimento com _ground truth_ e medem a acurácia da correspondência de colunas. O _survey_ de 2022 usa um catálogo de requisitos e casos de teste, enquanto o de 2026 classifica funcionalidades e dimensões de qualidade sem medir desempenho. Oliveira et al. (#cite(<oliveira2023>, form: "year")) contam falhas de _expectations_ e valores inesperados em tabelas governamentais. Acurácia de correspondência, frequência de problemas, cobertura funcional e falhas de validação representam, portanto, resultados distintos.
+_Testes com dados_ são aplicações de um método ou ferramenta sobre uma base. A comparação ocorre sob condições comuns quando mais de uma solução recebe os mesmos casos e critérios. Para medir a acurácia da detecção, o resultado obtido precisa ser confrontado com uma resposta conhecida. Na cobertura das ferramentas, o atendimento parcial indica que apenas parte das quatro soluções do TCC foi incluída.
 
-A cobertura das ferramentas também varia. Ehrlinger e Wöß (#cite(<ehrlinger2022>, form: "year")) não incluem as quatro soluções escolhidas para este TCC. Papastergios, Ehrlinger e Gounaris (#cite(<papastergios2026>, form: "year")) examinam Great Expectations e Soda Core, mas não Pandera e Frictionless. Oliveira et al. (#cite(<oliveira2023>, form: "year")) aplicam somente Great Expectations, pois as demais ferramentas são comparadas por documentação. Foidl et al. (#cite(<foidl2024>, form: "year")) e Yamanaka et al. (#cite(<yamanaka2024>, form: "year")) não avaliam ferramentas de validação. Quanto às mudanças estruturais, Yamanaka et al. oferecem a evidência mais direta, embora trabalhem apenas com colunas numéricas e mantenham um especialista na escolha entre os candidatos. Os demais estudos tratam tipos, formatos, presença de colunas e compatibilidade como problemas ou _checks_, sem aplicar alterações equivalentes a ferramentas diferentes.
+#figure(
+  table(
+    columns: (1.7fr, 1fr, 1fr, 1fr, 1fr, 1fr),
+    align: (left, center, center, center, center, center),
+    inset: 4pt,
+    table.header(
+      [*Critério*],
+      [*Foidl et al. (2024)*],
+      [*Yamanaka et al. (2024)*],
+      [*Ehrlinger e Wöß (2022)*],
+      [*Papastergios et al. (2026)*],
+      [*Oliveira et al. (2023)*],
+    ),
+    [Dados públicos], [Não], [Sim], [Não], [Não], [Sim],
+    [Mudanças estruturais], [Parcial], [Sim], [Parcial], [Parcial], [Parcial],
+    [Cobertura das ferramentas do TCC], [Não], [Não], [Não], [Parcial], [Parcial],
+    [Testes com dados], [Não], [Sim], [Sim], [Não], [Sim],
+    [Comparação sob condições comuns], [Não], [Sim], [Sim], [Não], [Parcial],
+    [Acurácia da detecção], [Não], [Sim], [Não], [Não], [Não],
+  ),
+  caption: [Comparação dos trabalhos relacionados segundo os critérios desta pesquisa.],
+) <tab:comparacao-trabalhos>
 
-As pesquisas usam contextos, dados e critérios próprios, não adotam um protocolo experimental comum e não medem conjuntamente falsos positivos, falsos negativos, esforço de configuração e custo computacional. Os _surveys_ descrevem cobertura, mas não demonstram eficácia diante de versões alteradas. Os estudos empíricos se aproximam dos dados públicos ou das _pipelines_, porém não comparam as quatro ferramentas em condições equivalentes. Entre os cinco trabalhos analisados, permanece sem avaliação o comportamento de Great Expectations, Pandera, Frictionless e Soda Core diante das mesmas mudanças estruturais em versões do CNES. Essa oportunidade orienta o TCC para uma comparação controlada do lado consumidor, limitada à capacidade de detectar e sinalizar alterações sem pressupor cooperação ou garantias do produtor.
+Foidl et al. (#cite(<foidl2024>, form: "year")) identificam tipos, representação e compatibilidade entre os problemas encontrados em _pipelines_, mas não submetem métodos de validação a uma base nem medem a detecção desses problemas. Yamanaka et al. (#cite(<yamanaka2024>, form: "year")) examinam o passo seguinte: mudanças de colunas entre versões de uma base pública. A comparação de quatro testes estatísticos com um _ground truth_ permite medir a acurácia das correspondências. Entre os trabalhos analisados, esse é o único que reúne dados públicos, mudanças estruturais observadas entre versões, comparação sob condições comuns e acurácia da detecção. Seu objeto, contudo, é um método de correspondência de colunas, não as ferramentas selecionadas para este TCC.
+
+Ehrlinger e Wöß (#cite(<ehrlinger2022>, form: "year")) executam casos de _data profiling_ sobre uma base comum e comparam as soluções por um catálogo de requisitos, embora o conjunto não inclua as quatro ferramentas deste TCC nem meça a acurácia da detecção de mudanças estruturais. Papastergios, Ehrlinger e Gounaris (#cite(<papastergios2026>, form: "year")) incluem Great Expectations e Soda Core, porém deixam de fora Pandera e Frictionless. O trabalho examina documentação e código para catalogar _checks_, sem executar as ferramentas sobre versões alteradas. Oliveira et al. (#cite(<oliveira2023>, form: "year")) retomam o contexto dos dados públicos e comparam oito soluções pela documentação, mas aplicam apenas Great Expectations. As falhas de _expectations_ e os valores inesperados mostram o resultado das validações, embora não permitam calcular a acurácia da detecção sem um _ground truth_.
+
+Nos cinco trabalhos analisados, o estudo de mudanças estruturais em dados públicos permanece separado da avaliação das ferramentas. Este TCC propõe aproximar essas duas frentes: Great Expectations, Pandera, Frictionless e Soda Core serão configuradas segundo uma mesma política de aceitação e receberão as mesmas alterações em dados do CNES. A comparação permitirá observar quais mudanças cada ferramenta detecta e se cada uma impede que entradas incompatíveis prossigam na _pipeline_.
 
 #bibliography("references.bib", title: [Referências], style: "associacao-brasileira-de-normas-tecnicas")
