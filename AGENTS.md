@@ -8,7 +8,7 @@
 Resiliência do Lado do Consumidor: Como resistir a Mudanças Estruturais em Base de Dados Públicas, uma Avaliação Comparativa de Ferramentas Open-Source de Qualidade de Dados
 
 ## Pergunta-problema
-Em que medida ferramentas open-source de validação de schema/dados (como Great Expectations, Pandera, Frictionless e Soda Core) conseguem detectar mudanças estruturais em dados públicos, funcionando como mecanismo de resiliência do lado do consumidor na ausência de um data contract formal com o produtor?
+Em uma pipeline batch de ingestão de dados do CNES, em que medida Great Expectations, Pandera, Frictionless e Soda Core detectam e bloqueiam mudanças estruturais predefinidas, quando configuradas segundo uma mesma política de aceitação, considerando cobertura de detecção por tipo de mudança, falsos bloqueios, tempo de configuração e tempo de execução?
 
 ## Contexto e escopo
 Trata-se de um Trabalho de Conclusão de Curso (graduação), individual, com tempo limitado, escrito em Typst como artigo acadêmico. Por isso, o escopo foi deliberadamente definido como uma **avaliação comparativa empírica de ferramentas já existentes** — e não a proposta de um novo framework, o que seria inviável nesse formato.
@@ -27,10 +27,11 @@ Importante: o trabalho **não propõe** data contracts do lado do produtor. Ele 
 O TCC se posiciona explicitamente na segunda categoria, como resposta prática à ausência da primeira.
 
 ## Metodologia planejada
-1. Definir critérios de comparação entre as ferramentas: tipos de mudança estrutural detectada (coluna adicionada/removida/renomeada, tipo alterado, mudança de encoding/delimitador), falsos positivos/negativos, esforço de configuração, facilidade de automação/alerta, extensibilidade, custo computacional, maturidade do projeto.
-2. Coletar versões históricas reais dos dados do CNES com mudanças estruturais conhecidas (via FTP do DataSUS), ou provocar mudanças sintéticas controladas quando necessário.
-3. Rodar cada ferramenta contra essas versões e medir empiricamente a capacidade de detecção e o esforço envolvido.
-4. Apresentar resultados em tabela comparativa + discussão qualitativa.
+1. Definir uma política comum de aceitação e representá-la de forma equivalente nas quatro ferramentas.
+2. Construir casos com versões históricas do CNES e mutações sintéticas controladas, cobrindo adição, remoção, renomeação e reordenação de colunas, alteração de tipo, nulidade, delimitador e encoding.
+3. Integrar cada ferramenta à mesma pipeline batch. Um lote será bloqueado quando a validação impedir a execução da etapa seguinte.
+4. Medir cobertura de detecção por tipo de mudança, falsos bloqueios, falhas não detectadas, tempo de configuração e tempo de execução.
+5. Comparar os resultados e as limitações das ferramentas sob as mesmas entradas e condições.
 
 ## Motivação
 O CNES é amplamente usado por pesquisadores, gestores públicos e empresas, mas não oferece garantias formais de estabilidade de schema nem comunicação estruturada de mudanças. Isso causa pipelines quebrando silenciosamente ou produzindo resultados incorretos sem aviso. A maior parte da literatura sobre data contracts assume que o consumidor tem poder de negociação com o produtor — o que não existe na relação entre um pesquisador/empresa e um órgão público. O trabalho preenche uma lacuna prática (guia de decisão para quem constrói pipelines sobre CNES ou bases públicas similares) e acadêmica (pouca literatura aplicada a dados públicos brasileiros).

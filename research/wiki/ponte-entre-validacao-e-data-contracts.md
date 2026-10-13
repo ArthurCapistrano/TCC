@@ -12,6 +12,14 @@ unilateralmente pelo consumidor de dados do CNES. Não haverá migração do tem
 para a proposição ou avaliação de um data contract entre o DataSUS e seus
 consumidores.
 
+A pergunta de pesquisa adotada é:
+
+> Em uma pipeline batch de ingestão de dados do CNES, em que medida Great
+> Expectations, Pandera, Frictionless e Soda Core detectam e bloqueiam mudanças
+> estruturais predefinidas, quando configuradas segundo uma mesma política de
+> aceitação, considerando cobertura de detecção por tipo de mudança, falsos
+> bloqueios, tempo de configuração e tempo de execução?
+
 Data contracts poderão ser utilizados na fundamentação como contraste
 conceitual e como uma solução que não está disponível no cenário estudado. A
 pergunta orientadora desse contraste é:
@@ -35,6 +43,17 @@ No experimento, a política comum de aceitação será uma especificação execu
 definida pelo consumidor e representada de forma equivalente nas ferramentas.
 Ela não deverá ser chamada de data contract, pois é unilateral e não cria
 obrigações para o produtor.
+
+Bloquear significa impedir que um lote considerado incompatível prossiga para
+a etapa seguinte da pipeline batch. A avaliação também utilizará entradas
+compatíveis para registrar falsos bloqueios e entradas alteradas que não forem
+interrompidas.
+
+Os cenários provisórios incluem adição, remoção, renomeação e reordenação de
+colunas, alteração de tipo e mudança na obrigatoriedade ou presença de valores
+nulos. Delimitador e encoding serão tratados separadamente quando a mudança
+impedir a leitura do arquivo antes da validação de schema. Os casos combinarão
+versões históricas do CNES, quando adequadas, e mutações sintéticas controladas.
 
 ## Possível argumento para a escrita
 

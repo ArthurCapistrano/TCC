@@ -1,8 +1,53 @@
 #set text(lang: "pt", region: "BR")
 #set heading(numbering: "1.1")
 
-// A introdução ocupará a seção 1 quando o restante do artigo for incorporado.
-#counter(heading).update(1)
+= Introdução
+
+== Motivação e contexto
+
+Com a expansão do uso de dados em processos analíticos, manter _pipelines_ de ingestão em funcionamento passou a ocupar uma parte importante do trabalho de engenharia de dados #cite(<foidl2024>). Quando esses dados são extraídos de uma fonte externa, parte desse funcionamento fica sujeita à estrutura publicada pelo produtor. O consumidor não controla essa estrutura, embora dependa dela para executar consultas, transformações e outros procedimentos. No contexto dos dados governamentais abertos, essa relação também envolve a confiança na instituição responsável pela disponibilização dos dados #cite(<zainal2024>). A avaliação da qualidade também considera a adequação dos dados ao uso pretendido #cite(<syed2023>).
+
+A estrutura esperada dos dados constitui o _schema_, que inclui colunas, tipos e restrições. Sua modificação pode envolver a adição, a remoção, a renomeação ou a alteração de componentes e atingir consultas, visões, procedimentos e código que dependem deles #cite(<brahmia2024>). Problemas de tipo, representação, caracteres e compatibilidade também interferem no processamento #cite(<foidl2024>).
+
+Um _data contract_, entendido neste trabalho como um acordo formal entre produtor e consumidor, pode estabelecer expectativas sobre a estrutura e o significado dos dados, obrigações e políticas de descontinuação #cite(<opendatameshDataContract>). Sem esse acordo, o consumidor precisa verificar os dados recebidos e decidir se eles continuam compatíveis com o processamento.
+
+No setor público, regras e métricas são usadas para avaliar a qualidade dos dados. Entre essas verificações, a validação de _schema_ permite examinar a integridade estrutural e identificar anomalias #cite(<silva2025>). O cenário analisado utiliza dados do Cadastro Nacional de Estabelecimentos de Saúde (CNES), disponibilizados pelo Departamento de Informática do Sistema Único de Saúde (DATASUS), cuja documentação descreve os layouts dos arquivos de disseminação (Brasil, #cite(<brasil2017cnes>, form: "year")). O CNES publica informes sobre atualizações do sistema e alterações em arquivos #cite(<brasilCnesInformes>).
+
+Neste experimento, entretanto, a validação será realizada a partir dos dados recebidos, sem utilizar esses informes como entrada para a detecção de mudanças. Logo, a motivação desta pesquisa está na necessidade de identificar alterações nos dados consumidos antes que elas comprometam as etapas seguintes do processamento.
+
+== Problema de pesquisa
+
+Sem uma garantia formal de versionamento ou comunicação de mudanças, os dados de uma fonte externa podem chegar à _pipeline_ com uma estrutura diferente da esperada. Essa mudança pode provocar uma falha durante o processamento ou permitir que dados incompatíveis avancem no fluxo. O problema desta pesquisa é determinar até que ponto ferramentas de qualidade de dados conseguem detectar e bloquear essas incompatibilidades antes que alcancem as etapas seguintes, sem interromper o processamento de dados que continuam válidos.
+
+Uma incompatibilidade não detectada permite que dados inadequados avancem pela _pipeline_. Um bloqueio indevido interrompe o processamento de um lote que continua válido. Para o consumidor, a dificuldade está em saber quais mudanças cada ferramenta reconhece e se o bloqueio ocorre apenas quando a entrada viola as condições definidas.
+
+A pesquisa será orientada pela seguinte pergunta:
+
+#quote(block: true)[
+  Em uma _pipeline batch_ de ingestão de dados do CNES, em que medida Great Expectations, Pandera, Frictionless e Soda Core detectam e bloqueiam mudanças estruturais predefinidas, quando configuradas segundo uma mesma política de aceitação, considerando cobertura de detecção por tipo de mudança, falsos bloqueios, tempo de configuração e tempo de execução?
+]
+
+== Justificativa
+
+Para escolher uma ferramenta, o consumidor precisa saber quais mudanças ela detecta, se consegue impedir o avanço de entradas incompatíveis e com que frequência bloqueia dados válidos. A lista de funcionalidades declaradas não basta para estabelecer como as ferramentas se comportam diante dos mesmos casos. O estudo do tema exige, portanto, observar os resultados produzidos em condições comparáveis.
+
+Pesquisas anteriores mostram que mudanças entre versões de bases públicas podem comprometer análises posteriores #cite(<yamanaka2024>) e que regras definidas pelo consumidor revelam inconsistências em dados governamentais #cite(<oliveira2023>). Também indicam que verificações semelhantes recebem nomes e formas de configuração diferentes #cite(<papastergios2026>) e que ferramentas de qualidade de dados já foram comparadas por meio de uma base comum e de casos de teste associados a requisitos definidos #cite(<ehrlinger2022>). Entre os trabalhos incluídos na revisão bibliográfica deste estudo, não foi identificada uma avaliação que reúna Great Expectations, Pandera, Frictionless e Soda Core sob as mesmas entradas, a mesma política de aceitação e a mesma definição de bloqueio.
+
+A adoção de condições comuns reduz a influência de diferenças entre regras, dados e critérios de sucesso sobre os resultados. A pesquisa poderá mostrar a cobertura de cada ferramenta por tipo de mudança, os bloqueios indevidos, as incompatibilidades não detectadas e os tempos de configuração e execução. Essas medidas poderão apoiar a escolha de uma ferramenta segundo as mudanças que ela reconhece, os erros que produz e o tempo exigido para configurá-la e executá-la.
+
+== Objetivos
+
+=== Objetivo geral
+
+Avaliar comparativamente a capacidade de Great Expectations, Pandera, Frictionless e Soda Core para detectar e bloquear mudanças estruturais predefinidas em uma _pipeline batch_ de ingestão de dados do CNES, sob uma mesma política de aceitação, considerando a cobertura por tipo de mudança, os falsos bloqueios e os tempos de configuração e execução.
+
+=== Objetivos específicos
+
+- Definir uma política comum de aceitação e cenários com adição, remoção, renomeação e reordenação de colunas, alteração de tipo, nulidade, delimitador e _encoding_;
+- configurar e integrar as quatro ferramentas à mesma _pipeline batch_;
+- executar casos provenientes de versões históricas do CNES e de mutações sintéticas controladas;
+- medir a cobertura de detecção por tipo de mudança, os falsos bloqueios, as falhas não detectadas, a capacidade de interromper a etapa seguinte e os tempos de configuração e execução;
+- comparar os resultados e as limitações das ferramentas no cenário estudado.
 
 = Trabalhos relacionados
 
